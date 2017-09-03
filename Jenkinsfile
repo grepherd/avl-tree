@@ -6,5 +6,10 @@ pipeline {
                 sh './build.sh'
             }
         }
+        stage('test') {
+            steps {
+                sh '/build/bin/tests'
+            }
+        }
     }
 }
