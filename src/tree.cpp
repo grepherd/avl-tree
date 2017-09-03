@@ -3,7 +3,11 @@
 
 // Class constructor
 // sets the data of the root node
-Tree::Tree(int newData) : data(newData)
+Tree::Tree()
+{
+}
+
+Tree::Tree(int newData) : data(std::make_unique<int>(newData))
 {
 }
 
@@ -13,7 +17,12 @@ bool Tree::insert(int newData)
 {
     bool retval = false;
 
-    if (newData < this->data)
+    // Check for empty root node
+    if (this->data == NULL)
+    {
+        this->data = std::make_unique<int>(newData);
+    }
+    else if (newData < *(this->data))
     {
         // Insert lesser values to the left
         if (this->left == NULL)
@@ -28,7 +37,7 @@ bool Tree::insert(int newData)
             retval = this->left->insert(newData);
         }
     }
-    else if (newData > this->data)
+    else if (newData > *(this->data))
     {
         // Insert greater values to the right
         if (this->right == NULL)
@@ -50,33 +59,43 @@ bool Tree::insert(int newData)
     }
 }
 
-uint size_helper(Tree *node)
+// Returns the number of nodes in the tree
+uint Tree::size()
 {
     uint leftSize;
     uint rightSize;
 
-    if (node->left == NULL)
+    // Node with no data is equivalent to no node
+    if (this->data == NULL)
+    {
+        return 0;
+    }
+
+    if (this->left == NULL)
     {
         leftSize = 0;
     }
     else
     {
-        leftSize = size_helper(node->left.get());
+        leftSize = this->left.get()->size();
     }
 
-    if (node->right == NULL)
+    if (this->right == NULL)
     {
         rightSize = 0;
     }
     else
     {
-        rightSize = size_helper(node->right.get());
+        rightSize = (this->right.get()->size());
     }
 
     return 1 + leftSize + rightSize;
 }
 
-uint Tree::size()
+// Delete all the nodes in the tree
+void Tree::empty()
 {
-    return size_helper(this);
+    // Reassign root ptr
+    // unique_ptr will clean up appropriately
+    this->data = NULL;
 }

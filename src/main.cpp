@@ -5,7 +5,7 @@
 
 int main()
 {
-    Tree test = Tree(5);
+    Tree test = Tree();
     test.insert(4);
     test.insert(6);
     test.insert(7);
