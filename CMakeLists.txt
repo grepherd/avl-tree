@@ -15,14 +15,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set ( SRCS 
 	${SRC}/tree.cpp
 )
-		  
+		
+set(CATCH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/catch)
+add_library(Catch INTERFACE)
+target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
+
+
 # Create a main executable
 add_executable(main ${SRC}/main.cpp ${SRCS})
 
 # Create a test executable that uses test.cpp instead of main.cpp
 # 	also define UNIT_TEST to enable tests
 add_executable(tests ${SRC}/test.cpp ${SRCS}) 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/catch)
-include_directories(${CATCH_INCLUDE_DIR})
 set_target_properties(tests PROPERTIES COMPILE_DEFINITIONS UNIT_TEST)
-add_dependencies(tests catch)
+target_link_libraries(tests Catch)
