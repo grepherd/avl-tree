@@ -16,16 +16,13 @@ set ( SRCS
 	${SRC}/tree.cpp
 )
 		  
-# Includes the Catch library as an external project
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/catch)
-
-
-
 # Create a main executable
 add_executable(main ${SRC}/main.cpp ${SRCS})
 
 # Create a test executable that uses test.cpp instead of main.cpp
 # 	also define UNIT_TEST to enable tests
 add_executable(tests ${SRC}/test.cpp ${SRCS}) 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ext/catch)
+include_directories(${CATCH_INCLUDE_DIR})
 set_target_properties(tests PROPERTIES COMPILE_DEFINITIONS UNIT_TEST)
 add_dependencies(tests catch)
